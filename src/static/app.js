@@ -854,7 +854,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // Use an anchor element to trigger mailto without interfering with browser navigation
       const anchor = document.createElement('a');
       anchor.href = mailtoUrl;
+      anchor.style.display = 'none';
+      document.body.appendChild(anchor);
       anchor.click();
+      document.body.removeChild(anchor);
     }
   }
 
