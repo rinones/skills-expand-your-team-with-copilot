@@ -536,11 +536,15 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     // Create difficulty badge if difficulty is set
-    const difficultyBadgeHtml = details.difficulty ? `
-      <span class="difficulty-badge difficulty-${details.difficulty.toLowerCase()}">
-        ${details.difficulty}
-      </span>
-    ` : '';
+    let difficultyBadgeHtml = '';
+    if (details.difficulty) {
+      const safeDifficulty = String(details.difficulty).replace(/[<>]/g, '');
+      difficultyBadgeHtml = `
+        <span class="difficulty-badge difficulty-${safeDifficulty.toLowerCase()}">
+          ${safeDifficulty}
+        </span>
+      `;
+    }
 
     // Create capacity indicator
     const capacityIndicator = `
@@ -681,13 +685,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add event listeners for difficulty filter buttons
   difficultyFilters.forEach((button) => {
     button.addEventListener("click", () => {
-      // Update active class
-      difficultyFilters.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      // Update current difficulty filter and fetch activities
-      currentDifficulty = button.dataset.difficulty;
-      fetchActivities();
+      setDifficultyFilter(button.dataset.difficulty);
     });
   });
 
